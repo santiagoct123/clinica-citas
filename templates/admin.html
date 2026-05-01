@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Cerrar sesión</a>
+    <a href="/perfil">Mi perfil</a>
+</nav>
+
+<div class="container">
+    <h1>Panel Administrativo</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Médico</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for cita in citas %}
+        <tr>
+            <td>{{ cita.fecha }}</td>
+            <td>{{ cita.hora }}</td>
+            <td>{{ cita.medico }}</td>
+            <td>
+                <a class="btn-edit" href="/editar_cita/{{ cita.id }}">Editar</a>
+                <a class="btn-delete" href="/eliminar_admin/{{ cita.id }}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

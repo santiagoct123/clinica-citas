@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Citas Médicas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+    <a href="/">Inicio</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/citas">Citas</a>
+    <a href="/perfil">Mi perfil</a>
+    <a href="/admin">Admin</a>
+    <a href="/logout">Cerrar sesión</a>
+</nav>
+    <div class="container">
+    <h1>Agendar cita</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="flash-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <form method="POST">
+        <input type="date" name="fecha" required><br><br>
+
+        <input type="time" name="hora" required><br><br>
+
+        <select name="medico" required>
+            <option value="">Seleccione médico</option>
+            <option value="Dr. Pérez">Dr. Pérez</option>
+            <option value="Dra. Gómez">Dra. Gómez</option>
+            <option value="Dr. Rodríguez">Dr. Rodríguez</option>
+        </select><br><br>
+
+        <button type="submit">Agendar</button>
+    </form>
+
+    <hr>
+
+    <h2>Mis citas</h2>
+
+    <ul>
+        {% for cita in citas %}
+        <li>
+            {{ cita.fecha }} - {{ cita.hora }} - {{ cita.medico }}
+            <a href="/cancelar_cita/{{ cita.id }}">Cancelar</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="/dashboard">Volver</a>
+    </div>
+</body>
+</html>

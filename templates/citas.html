@@ -31,12 +31,34 @@
 
         <input type="time" name="hora" required><br><br>
 
-        <select name="medico" required>
-            <option value="">Seleccione médico</option>
-            <option value="Dr. Pérez">Dr. Pérez</option>
-            <option value="Dra. Gómez">Dra. Gómez</option>
-            <option value="Dr. Rodríguez">Dr. Rodríguez</option>
-        </select><br><br>
+<label for="medico">Médico</label>
+<select id="medico" name="medico" required>
+    <option value="">Seleccione médico</option>
+
+    <option value="Dr. Pérez - Medicina General">
+        Dr. Pérez - Medicina General
+    </option>
+
+    <option value="Dra. Gómez - Pediatría">
+        Dra. Gómez - Pediatría
+    </option>
+
+    <option value="Dr. Rodríguez - Odontología">
+        Dr. Rodríguez - Odontología
+    </option>
+
+    <option value="Dra. Martínez - Dermatología">
+        Dra. Martínez - Dermatología
+    </option>
+
+    <option value="Dr. López - Cardiología">
+        Dr. López - Cardiología
+    </option>
+
+    <option value="Dra. Ramírez - Ginecología">
+        Dra. Ramírez - Ginecología
+    </option>
+</select>
 
         <button type="submit">Agendar</button>
     </form>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, login_required
 from models import db, Usuario, Cita
@@ -219,7 +219,38 @@ def perfil():
 
     return render_template('perfil.html')
 
+@app.route('/api/citas', methods=['GET'])
+def api_citas():
+    citas = Cita.query.all()
 
+    resultado = []
+
+    for cita in citas:
+        resultado.append({
+            'id': cita.id,
+            'fecha': cita.fecha,
+            'hora': cita.hora,
+            'medico': cita.medico,
+            'usuario_id': cita.usuario_id
+        })
+
+    return jsonify(resultado)
+
+@app.route('/api/usuarios', methods=['GET'])
+def api_usuarios():
+    usuarios = Usuario.query.all()
+
+    resultado = []
+
+    for usuario in usuarios:
+        resultado.append({
+            'id': usuario.id,
+            'nombre': usuario.nombre,
+            'correo': usuario.correo,
+            'rol': usuario.rol
+        })
+
+    return jsonify(resultado)
 
 with app.app_context():
     db.create_all()

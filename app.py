@@ -220,6 +220,7 @@ def perfil():
     return render_template('perfil.html')
 
 @app.route('/api/citas', methods=['GET'])
+@login_required
 def api_citas():
     citas = Cita.query.all()
 
@@ -237,7 +238,13 @@ def api_citas():
     return jsonify(resultado)
 
 @app.route('/api/usuarios', methods=['GET'])
+@login_required
 def api_usuarios():
+    from flask_login import current_user
+
+    if current_user.rol != 'admin':
+        return jsonify({'error': 'Acceso no autorizado'}), 403
+
     usuarios = Usuario.query.all()
 
     resultado = []

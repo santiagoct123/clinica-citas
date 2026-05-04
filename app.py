@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey123'
 
 database_url = os.environ.get("DATABASE_URL")
-print("DATABASE_URL:", database_url)
+##print("DATABASE_URL:", database_url)
 
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace(

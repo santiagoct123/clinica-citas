@@ -237,6 +237,72 @@ def api_citas():
 
     return jsonify(resultado)
 
+@app.route('/api/citas/<int:id>', methods=['GET'])
+@login_required
+def obtener_cita(id):
+    cita = Cita.query.get_or_404(id)
+
+    return jsonify({
+        'id': cita.id,
+        'fecha': cita.fecha,
+        'hora': cita.hora,
+        'medico': cita.medico,
+        'usuario_id': cita.usuario_id
+    })
+
+@app.route('/api/citas/<int:id>', methods=['DELETE'])
+@login_required
+def eliminar_cita_api(id):
+    from flask_login import current_user
+
+    if current_user.rol != 'admin':
+        return jsonify({'error': 'No autorizado'}), 403
+
+    cita = Cita.query.get_or_404(id)
+
+    db.session.delete(cita)
+    db.session.commit()
+
+    return jsonify({'mensaje': 'Cita eliminada'})
+
+@app.route('/api/citas/<int:id>', methods=['PUT'])
+@login_required
+def actualizar_cita_api(id):
+    cita = Cita.query.get_or_404(id)
+    data = request.get_json()
+
+    cita.fecha = data.get('fecha', cita.fecha)
+    cita.hora = data.get('hora', cita.hora)
+    cita.medico = data.get('medico', cita.medico)
+
+    db.session.commit()
+
+    return jsonify({'mensaje': 'Cita actualizada'})
+
+@app.route('/api/health')
+def health():
+    return jsonify({
+        'status': 'ok',
+        'service': 'clinica citas api'
+    })
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.get_json()
+
+    usuario = Usuario.query.filter_by(
+        correo=data['correo']
+    ).first()
+
+    if usuario and bcrypt.check_password_hash(
+        usuario.password,
+        data['password']
+    ):
+        return jsonify({'mensaje': 'Login exitoso'})
+
+    return jsonify({'error': 'Credenciales inválidas'}), 401
+
+
 @app.route('/api/usuarios', methods=['GET'])
 @login_required
 def api_usuarios():
